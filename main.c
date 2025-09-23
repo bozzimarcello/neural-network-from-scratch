@@ -71,7 +71,7 @@ int main (void) {
     }
   }
   
-  // print the initial hidden layer weights
+  // DEBUG - print the initial hidden layer weights
   printf("\n\n--> Initial Input to Hidden Weights\n");
   for (int i = 0; i < NUM_INPUTS; i++) {
     for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
@@ -86,7 +86,7 @@ int main (void) {
     }
   }
   
-  // print the initial output layer weights
+  // DEBUG - print the initial output layer weights
   printf("\n\n--> Initial Hidden to Output Weights\n");
   for (int i = 0; i < NUM_INPUTS; i++) {
     for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
@@ -99,13 +99,63 @@ int main (void) {
     outputLayerBias[i] = init_weights();
   }
   
-  // print the output layer biases
+  // DEBUG - print the output layer biases
   printf("\n\n--> Initial Output Bias\n");
   for (int i = 0; i < NUM_OUTPUTS; i++) {
       printf("%f ", outputLayerBias[i]);
   }
 
+  int trainingSetOrder[] = {0, 1, 2, 3};
 
+  int numberOfEpochs = 10000;
+
+  for (int epoch = 0; epoch < numberOfEpochs; epoch++) {
+
+    shuffle(trainingSetOrder, NUM_TRAINING_SETS);
+
+    for (int x = 0; x < NUM_TRAINING_SETS; x++) {
+      int i = trainingSetOrder[x];
+
+      // Forward pass
+
+      // Compute hidden layer activation
+      for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+        
+        double activation = hiddenLayerBias[j];
+
+        for (int k = 0; k < NUM_INPUTS; k++) {
+          activation += trainingInputs[i][k] * hiddenWeights[k][j];
+        }
+
+        hiddenLayer[j] = sigmoid(activation);
+        
+      }
+      
+      // Compute output layer activation
+      for (int j = 0; j < NUM_OUTPUTS; j++) {
+        
+        double activation = outputLayerBias[j];
+
+        for (int k = 0; k < NUM_HIDDEN_NODES; k++) {
+          activation += hiddenLayer[k] * outputWeights[k][j];
+        }
+
+        outputLayer[j] = sigmoid(activation);
+        
+      }
+
+      printf("Input: %g    Output: %g   Predicted output: %g\n",
+        trainingInputs[i][0],
+        outputLayer[0],
+        trainingOutputs[i][0]
+        );
+
+      
+
+    }
+    
+  }
+  
 
   printf("\n\n>>> Main Ends\n");
 
