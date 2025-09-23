@@ -12,12 +12,26 @@ double init_weights() {
   return ( (double) rand() ) / ( (double) RAND_MAX );
 }
 
+// Activation function: "Squashes" any input into a probability-like range
 double sigmoid(double x) {
   return 1.0f / ( 1.0f + exp(-x) );
 }
 
+// derivative of sigmoid to back-propogate
 double d_sigmoid(double x) {
   return x * ( 1.0f - x );
+}
+
+void shuffle(int *array, size_t n) {
+
+  if (n > 1) {
+    for (size_t i = 0; i < ( n - 1 ); i++) {
+      size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+      int t = array[j];
+      array[j] = array[i];
+      array[i] = t;
+    }
+  }
 }
 
 int main (void) {
@@ -50,5 +64,17 @@ int main (void) {
       {0.0f},
     };
 
-
+  for (int i = 0; i < NUM_INPUTS; i++) {
+    for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+      hiddenWeights[i][j] = init_weights(); 
+    }
+  }
+  
+  // print the initial weights
+  for (int i = 0; i < NUM_INPUTS; i++) {
+    for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+      printf("%f ", hiddenWeights[i][j]);
+    }
+    printf("\n");
+  }
 }
