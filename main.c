@@ -7,6 +7,19 @@
 #define NUM_OUTPUTS 1
 #define NUM_TRAINING_SETS 4
 
+// Random initializer
+double init_weights() {
+  return ( (double) rand() ) / ( (double) RAND_MAX );
+}
+
+double sigmoid(double x) {
+  return 1.0f / ( 1.0f + exp(-x) );
+}
+
+double d_sigmoid(double x) {
+  return x * ( 1.0f - x );
+}
+
 int main (void) {
   
   // Neural Network definitions
@@ -36,5 +49,6 @@ int main (void) {
       {1.0f},
       {0.0f},
     };
+
 
 }
