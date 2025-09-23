@@ -114,6 +114,7 @@ int main (void) {
     shuffle(trainingSetOrder, NUM_TRAINING_SETS);
 
     for (int x = 0; x < NUM_TRAINING_SETS; x++) {
+
       int i = trainingSetOrder[x];
 
       // Forward pass
@@ -150,7 +151,42 @@ int main (void) {
         trainingOutputs[i][0]
         );
 
+      // Back propagation
+
+      // Compute change in output weights
+
+      double deltaOutput[NUM_OUTPUTS];
+      for (int j = 0; j < NUM_OUTPUTS; j++) {
+        
+        double error = (trainingOutputs[i][j] - outputLayer[j]);
+        deltaOutput[j] = error * d_sigmoid(outputLayer[j]);
+
+      }
       
+      double deltaHidden[NUM_HIDDEN_NODES];
+      for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+        double error = 0.0f;
+        for (int k = 0; k < NUM_OUTPUTS; k++) {
+          error += deltaOutput[k] * outputWeights[j][k];
+        }
+        deltaHidden[j] = error * d_sigmoid(hiddenLayer[j]); 
+      }
+      
+      // Apply change in output weights
+      for (int j = 0; j < NUM_OUTPUTS; j++) {
+        outputLayerBias[j] += deltaOutput[j] * lr;
+        for (int k = 0; k < NUM_HIDDEN_NODES; k++) {
+          outputWeights[k][j] += hiddenLayer[k] * deltaOutput[j] * lr;
+        }
+      }
+      
+      // Apply change in output weights
+      for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+        hiddenLayerBias[j] += deltaHidden[j] * lr;
+        for (int k = 0; k < NUM_INPUTS; k++) {
+          hiddenWeights[k][j] += hiddenLayer[k] * deltaOutput[j] * lr;
+        }
+      }
 
     }
     
