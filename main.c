@@ -63,18 +63,51 @@ int main (void) {
       {1.0f},
       {0.0f},
     };
-
+  
+  // Initialize initial weights
   for (int i = 0; i < NUM_INPUTS; i++) {
     for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
       hiddenWeights[i][j] = init_weights(); 
     }
   }
   
-  // print the initial weights
+  // print the initial hidden layer weights
+  printf("\n\n--> Initial Input to Hidden Weights\n");
   for (int i = 0; i < NUM_INPUTS; i++) {
     for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
       printf("%f ", hiddenWeights[i][j]);
     }
     printf("\n");
   }
+
+  for (int i = 0; i < NUM_INPUTS; i++) {
+    for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+      outputWeights[i][j] = init_weights(); 
+    }
+  }
+  
+  // print the initial output layer weights
+  printf("\n\n--> Initial Hidden to Output Weights\n");
+  for (int i = 0; i < NUM_INPUTS; i++) {
+    for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+      printf("%f ", outputWeights[i][j]);
+    }
+    printf("\n");
+  }
+
+  for (int i = 0; i < NUM_OUTPUTS; i++) {
+    outputLayerBias[i] = init_weights();
+  }
+  
+  // print the output layer biases
+  printf("\n\n--> Initial Output Bias\n");
+  for (int i = 0; i < NUM_OUTPUTS; i++) {
+      printf("%f ", outputLayerBias[i]);
+  }
+
+
+
+  printf("\n\n>>> Main Ends\n");
+
+  return 0;
 }
