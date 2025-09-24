@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h> // Add for seeding rand()
 
 #define NUM_INPUTS 2
 #define NUM_HIDDEN_NODES 2
@@ -14,12 +15,12 @@ double init_weights() {
 
 // Activation function: "Squashes" any input into a probability-like range
 double sigmoid(double x) {
-  return 1.0f / ( 1.0f + exp(-x) );
+  return 1.0 / ( 1.0 + exp(-x) );
 }
 
 // derivative of sigmoid to back-propogate
 double d_sigmoid(double x) {
-  return x * ( 1.0f - x );
+  return x * ( 1.0 - x );
 }
 
 void shuffle(int *array, size_t n) {
@@ -36,8 +37,10 @@ void shuffle(int *array, size_t n) {
 
 int main (void) {
   
+  srand(time(NULL)); // Seed the random number generator
+
   // Neural Network definitions
-  const double lr = 0.1f;
+  const double lr = 0.1;
 
   double hiddenLayer[NUM_HIDDEN_NODES];
   double outputLayer[NUM_OUTPUTS];
@@ -80,19 +83,23 @@ int main (void) {
     printf("\n");
   }
 
-  for (int i = 0; i < NUM_INPUTS; i++) {
-    for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+  for (int i = 0; i < NUM_HIDDEN_NODES; i++) {
+    for (int j = 0; j < NUM_OUTPUTS; j++) {
       outputWeights[i][j] = init_weights(); 
     }
   }
   
   // DEBUG - print the initial output layer weights
   printf("\n\n--> Initial Hidden to Output Weights\n");
-  for (int i = 0; i < NUM_INPUTS; i++) {
-    for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
+  for (int i = 0; i < NUM_HIDDEN_NODES; i++) {
+    for (int j = 0; j < NUM_OUTPUTS; j++) {
       printf("%f ", outputWeights[i][j]);
     }
     printf("\n");
+  }
+
+  for (int i = 0; i < NUM_HIDDEN_NODES; i++) {
+    hiddenLayerBias[i] = init_weights();
   }
 
   for (int i = 0; i < NUM_OUTPUTS; i++) {
@@ -145,13 +152,13 @@ int main (void) {
         
       }
 
-      printf("Input: %g %g    Output: %g   Predicted output: %g\n",
+      printf("Input: %g %g    Output: %g    Predicted output: %g\n",
         trainingInputs[i][0],
         trainingInputs[i][1],
         outputLayer[0],
         trainingOutputs[i][0]
         );
-
+        
       // Back propagation
 
       // Compute change in output weights
@@ -195,42 +202,40 @@ int main (void) {
   }
 
   // final weights after done training
-  fputs("\nFinal Hidden Weights\n[", stdout);
-  for (int j = 0; j < NUM_HIDDEN_NODES; j++)
+  printf("\n\nFinal Hidden Weights\n");
+  for (int i = 0; i < NUM_INPUTS; i++)
   {
-    fputs("[  ", stdout);
-    for (int k = 0; k < NUM_INPUTS; k++)
+    for (int j = 0; j < NUM_HIDDEN_NODES; j++)
     {
-      printf("%f ", hiddenWeights[k][j]);          
+      printf("%f ", hiddenWeights[i][j]);          
     }  
-    fputs("] ", stdout);      
+    printf("\n");      
   }
 
-  fputs("]\nFinal Hidden Biases\n[", stdout);
-  for (int j = 0; j < NUM_HIDDEN_NODES; j++)
+  printf("\nFinal Hidden Biases\n");
+  for (int i = 0; i < NUM_HIDDEN_NODES; i++)
   {
-    printf("%f ", hiddenLayerBias[j]);
+    printf("%f ", hiddenLayerBias[i]);
   }
   
   // final weights after done training
-  fputs("\nFinal Output Weights\n[", stdout);
-  for (int j = 0; j < NUM_OUTPUTS; j++)
+  printf("\n\nFinal Output Weights\n");
+  for (int i = 0; i < NUM_HIDDEN_NODES; i++)
   {
-    fputs("[  ", stdout);
-    for (int k = 0; k < NUM_HIDDEN_NODES; k++)
+    for (int j = 0; j < NUM_OUTPUTS; j++)
     {
-      printf("%f ", outputWeights[k][j]);          
+      printf("%f ", outputWeights[i][j]);          
     }  
-    fputs("] ", stdout);      
+    printf("\n");      
   }
 
-  fputs("]\nFinal Output Biases\n[", stdout);
-  for (int j = 0; j < NUM_OUTPUTS; j++)
+  printf("\nFinal Output Biases\n");
+  for (int i = 0; i < NUM_OUTPUTS; i++)
   {
-    printf("%f ", outputLayerBias[j]);
+    printf("%f ", outputLayerBias[i]);
   }
 
-  fputs("] \n", stdout);
+  printf("\n");
   
 
   printf("\n\n>>> Main Ends\n");
