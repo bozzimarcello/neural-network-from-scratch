@@ -54,17 +54,17 @@ int main (void) {
   // Training datasets
   double trainingInputs[NUM_TRAINING_SETS][NUM_INPUTS] = 
     {
-      {0.0f,0.0f},
-      {1.0f,0.0f},
-      {0.0f,1.0f},
-      {1.0f,1.0f},
+      {0.0,0.0},
+      {1.0,0.0},
+      {0.0,1.0},
+      {1.0,1.0},
     };
   double trainingOutputs[NUM_TRAINING_SETS][NUM_OUTPUTS] = 
     {
-      {0.0f},
-      {1.0f},
-      {1.0f},
-      {0.0f},
+      {0.0},
+      {1.0},
+      {1.0},
+      {0.0},
     };
   
   // Initialize initial weights
