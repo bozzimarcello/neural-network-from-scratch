@@ -74,28 +74,10 @@ int main (void) {
     }
   }
   
-  // DEBUG - print the initial hidden layer weights
-  printf("\n\n--> Initial Input to Hidden Weights\n");
-  for (int i = 0; i < NUM_INPUTS; i++) {
-    for (int j = 0; j < NUM_HIDDEN_NODES; j++) {
-      printf("%f ", hiddenWeights[i][j]);
-    }
-    printf("\n");
-  }
-
   for (int i = 0; i < NUM_HIDDEN_NODES; i++) {
     for (int j = 0; j < NUM_OUTPUTS; j++) {
       outputWeights[i][j] = init_weights(); 
     }
-  }
-  
-  // DEBUG - print the initial output layer weights
-  printf("\n\n--> Initial Hidden to Output Weights\n");
-  for (int i = 0; i < NUM_HIDDEN_NODES; i++) {
-    for (int j = 0; j < NUM_OUTPUTS; j++) {
-      printf("%f ", outputWeights[i][j]);
-    }
-    printf("\n");
   }
 
   for (int i = 0; i < NUM_HIDDEN_NODES; i++) {
@@ -104,12 +86,6 @@ int main (void) {
 
   for (int i = 0; i < NUM_OUTPUTS; i++) {
     outputLayerBias[i] = init_weights();
-  }
-  
-  // DEBUG - print the output layer biases
-  printf("\n\n--> Initial Output Bias\n");
-  for (int i = 0; i < NUM_OUTPUTS; i++) {
-      printf("%f ", outputLayerBias[i]);
   }
 
   int trainingSetOrder[] = {0, 1, 2, 3};
@@ -158,7 +134,7 @@ int main (void) {
         outputLayer[0],
         trainingOutputs[i][0]
         );
-        
+
       // Back propagation
 
       // Compute change in output weights
